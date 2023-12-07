@@ -79,6 +79,17 @@ def readfile(filename):
         freader = DictReader(data)
         return list(freader)
 
+def copyline(filename):
+    c = readfile(filename)
+    print("here are the copying options {}".format(c))
+    while True:
+        whichone = str(input("insert phone number of a person you want to copy "))
+        for i in c:
+            if whichone in i.values():
+                return [k for k in i.values()]
+            else:
+                continue
+        print("no such person in file")
 
      
 def writefile(filename, lst):
@@ -107,7 +118,12 @@ def main():
             if not exists(filename):
                 createfile(filename)
             writefile(filename, getinfo())
-        
+        elif command == "c":
+            filename = input("insert file name from which you want to copy data ")
+            newfilename = input("insert file name where you want your files to be pasted ")
+            if not exists(newfilename):
+                createfile(newfilename)
+            writefile(newfilename, copyline(filename))
         elif command == "r":
             filename = input("insert file name ")
             if not exists(filename):
