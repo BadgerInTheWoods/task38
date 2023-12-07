@@ -29,16 +29,30 @@ def getinfo():
 
     isvalidphone = False
     isvalidname = False
+    isvalidsurname = False
+
     while not isvalidname:
         try:
-            name = firstname = input("insert name")
+            name = firstname = input("insert name ")
             if len(firstname) < 2:
-                raise NameError("invaliv name")
+                raise NameError("invalid name ")
             else:
                 isvalidname = True
         except NameError as err:
             print(err)
             continue
+
+    while not isvalidsurname:
+        try:
+            surname = lastname = input("insert surname ")
+            if len(lastname) < 2:
+                raise NameError("invalid surname ")
+            else:
+                isvalidsurname = True
+        except NameError as err:
+            print(err)
+            continue
+
     while not isvalidphone:
         try:
             phonenumber = int(input("insert phone number "))
@@ -65,6 +79,18 @@ def readfile(filename):
         freader = DictReader(data)
         return list(freader)
 
+def copyline(filename):
+    c = readfile(filename)
+    print("here are the copying options {}".format(c))
+    while True:
+        whichone = str(input("insert phone number of a person you want to copy "))
+        for i in c:
+            if whichone in i.values():
+                return [k for k in i.values()]
+            else:
+                continue
+        print("no such person in file")
+     
 def writefile(filename, lst):
     res = readfile(filename)
     for elem in res:
@@ -79,7 +105,7 @@ def writefile(filename, lst):
         fwriter.writerows(res)
 
 
-filename = "Phone.csv"
+#filename = input("insert file name ")
 
 def main():
     while True:
@@ -87,10 +113,18 @@ def main():
         if command == "q":
             break
         elif command == "w":
+            filename = input("insert file name ")
             if not exists(filename):
                 createfile(filename)
             writefile(filename, getinfo())
+        elif command == "c":
+            filename = input("insert file name from which you want to copy data ")
+            newfilename = input("insert file name where you want your files to be pasted ")
+            if not exists(newfilename):
+                createfile(newfilename)
+            writefile(newfilename, copyline(filename))
         elif command == "r":
+            filename = input("insert file name ")
             if not exists(filename):
                 print("file do not exist")
                 continue
@@ -99,7 +133,9 @@ def main():
 main()
 
 
+
 #HW "Дополнить справочник возможностью копирования данных
 #  из одного файла в другой. Пользователь вводит номер строки,
 #  которую необходимо перенести из одного файла в другой."
 # отсылать ссылку на пулл реквест, пулл делается в свой репо, инструкция на первом уроке
+
